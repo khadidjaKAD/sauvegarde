@@ -8,7 +8,6 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <DataGrid 
-            
             x:Name="datagrid" 
             IsReadOnly="True" 
             CanUserSortColumns="False"
@@ -25,9 +24,9 @@
                 <DataGridTextColumn Header="@" Width="1*"  Binding="{Binding adresse}"/>
                 <DataGridTextColumn Header="Nom" Width="1*"  Binding="{Binding nom}"/>
             </DataGrid.Columns>
-            
+
             <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridRow}" >
+                <Style TargetType="{x:Type DataGridRow}" >
                     <Setter Property="Height" Value="{Binding taille}"/>
                     <Setter Property="MinHeight" Value="25"/>
                     <Style.Triggers>
@@ -45,9 +44,23 @@
             </DataGrid.Resources>
 
         </DataGrid>
-        <Button Content="Modifier" Name="modifier" HorizontalAlignment="Left" Margin="555,200,0,0" VerticalAlignment="Top" Width="75" Click="click1"/>
+        <Button Content="Modifier" Name="modifier" HorizontalAlignment="Left" Margin="129,126,0,0" VerticalAlignment="Top" Width="75" Click="click1"/>
         <Button Content="Sauvegarder" Name="Save" HorizontalAlignment="Left" Margin="129,252,0,0" VerticalAlignment="Top" Width="75" Click="click2"/>
         <Button Content="Restaurer" x:Name="desave" HorizontalAlignment="Left" Margin="129,185,0,0" VerticalAlignment="Top" Width="75" Click="click3"/>
+        <DataGrid 
+            x:Name="datagrid1" 
+            IsReadOnly="True" 
+            CanUserSortColumns="False"
+            AutoGenerateColumns="False"
+            HeadersVisibility="Column"
+            HorizontalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Left" Height="291" Margin="516,67,0,0" VerticalAlignment="Top" Width="136" >
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="personne" Width="1*" Binding ="{ Binding nom }"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
 
     </Grid>
 </Window>

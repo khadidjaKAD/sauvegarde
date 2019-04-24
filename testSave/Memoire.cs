@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace testSave
 {
     [Serializable] // pour dire qu'elle peut etre sauvegarder
-    class Memoire
+    public class Memoire
     {
         public List<Processus> mem { get; set; }
         public int taille { get; set; }

@@ -15,39 +15,51 @@ using System.Windows.Shapes;
 using System.Runtime.Serialization; //
 using System.Runtime.Serialization.Formatters.Binary; //
 using System.IO; //
-using Microsoft.Win32;
+using Microsoft.Win32; //
 
 namespace testSave
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
-    /// </summary>
+    /// </summary> 
+
+
     public partial class MainWindow : Window
     {
-        Memoire Mem;
+        Container cont;
+        File f, ff;
         public MainWindow()
         {
             InitializeComponent();
-            Mem = new Memoire(300);
             Processus P1 = new Processus("P1",100,true,0);
             Processus P2 = new Processus("P2", 50,true,100);
             Processus P3 = new Processus("P3", 150, false, 150);
-            Mem.mem.Add(P1);
-            Mem.mem.Add(P2);
-            Mem.mem.Add(P3);
+            cont = new Container();
+            cont.Mem.mem.Add(P1);
+            cont.Mem.mem.Add(P2);
+            cont.Mem.mem.Add(P3);
+            f = new File("file");
+            ff = new File("ffile");
+            cont.files.Add(f);
+            cont.files.Add(ff);
 
-            datagrid.ItemsSource = Mem.mem;
+            datagrid.ItemsSource = cont.Mem.mem;
+            datagrid1.ItemsSource = cont.files;
 
         }
 
         private void click1(object sender, RoutedEventArgs e)
         {
             datagrid.ItemsSource = null;
+             datagrid1.ItemsSource = null;
 
-            Mem.mem.RemoveAt(1);
-            Mem.mem.Add(new Processus("P4", 20, true, 250));
+            cont.Mem.mem.RemoveAt(1);
+            cont.Mem.mem.Add(new Processus("P4", 20, true, 250));
 
-            datagrid.ItemsSource = Mem.mem;
+            cont.files.RemoveAt(1);
+
+            datagrid.ItemsSource = cont.Mem.mem;
+            datagrid1.ItemsSource = cont.files;
         }
 
         private void click2(object sender, RoutedEventArgs e)
@@ -60,7 +72,7 @@ namespace testSave
             {
                 IFormatter formatter = new BinaryFormatter();  // c'est celui qui s'occupe du format : binary / xml / soap ...
                 Stream stream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write); // le flux d'E/S 
-                formatter.Serialize(stream, Mem); // la sauvegarde
+                formatter.Serialize(stream, cont); // la sauvegarde
                 stream.Close(); // fermeture du flux
             }
         }
@@ -68,17 +80,19 @@ namespace testSave
         private void click3(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = @"C:\Users\Slash\Documents\khadidja\etudes\2CPI\projet S2\testSave\testSave";
+            openFileDialog.InitialDirectory = @"C:\Users\Slash\Documents";
             openFileDialog.Filter = "fichier de simulation (*.mem)|*.mem";
             openFileDialog.Title = "Ouvrir";
             if (openFileDialog.ShowDialog() == true)
             {
                 datagrid.ItemsSource = null;
+                datagrid1.ItemsSource = null;
                 IFormatter formatter = new BinaryFormatter();
-
                 Stream stream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                Mem = (Memoire)formatter.Deserialize(stream); // la recuperation
-                datagrid.ItemsSource = Mem.mem;
+                cont = (Container)formatter.Deserialize(stream); // la recuperation
+                stream.Close();
+                datagrid.ItemsSource = cont.Mem.mem;
+                datagrid1.ItemsSource = cont.files;
             }
 
 
@@ -87,6 +101,19 @@ namespace testSave
             Stream stream = new FileStream("C:\\Users\\Slash\\Documents\\khadidja\\etudes\\2CPI\\projet S2\\testSave\\testSave\\Save.mem", FileMode.Open, FileAccess.Read);
             Mem = (Memoire)formatter.Deserialize(stream); // la recuperation
             datagrid.ItemsSource = Mem.mem;*/
+        }
+    }
+
+    [Serializable]
+    public class Container
+    {
+        public Memoire Mem;
+        public List<File> files;
+
+        public Container()
+        {
+            Mem = new Memoire(300);
+            files = new List<File>();
         }
     }
 }
