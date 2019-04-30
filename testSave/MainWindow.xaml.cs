@@ -27,7 +27,7 @@ namespace testSave
     public partial class MainWindow : Window
     {
         Container cont;
-        File f, ff;
+        File f, ff,fclone;
         public MainWindow()
         {
             InitializeComponent();
@@ -115,5 +115,6 @@ namespace testSave
             Mem = new Memoire(300);
             files = new List<File>();
         }
+
     }
 }
